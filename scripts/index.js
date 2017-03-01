@@ -11,11 +11,38 @@ var wind_speed = document.querySelector("#wind_speed");
 
 var shortWeather = weather.consolidated_weather[0];
 
-humidity.innerText = shortWeather.humidity
-predictability.innerText = shortWeather.predictability
-the_temp.innerText = shortWeather.the_temp
-weather_state_name.innerText = shortWeather.weather_state_name
-wind_speed.innerText = shortWeather.wind_speed
+var weatherIconsPlaceholders = document.querySelectorAll("img")
 
-cityName.innerText = weather.title;
-time.innerText = weather.time;
+var select = document.querySelector("#city");
+select.onchange = function(){
+	var townName = select.value;
+	
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      	var response = JSON.parse(this.responseText);
+
+        humidity.innerText = response.current.humidity
+        the_temp.innerText = response.current.temp_c
+        weather_state_name.innerText = response.current.condition.text
+        wind_speed.innerText = response.current.wind_kph
+
+        cityName.innerText = response.location.name;
+        time.innerText = response.location.localtime;
+        weatherIconsPlaceholders.forEach(function(img){
+        	img.setAttribute("src", "http:" + response.current.condition.icon)}
+        	);
+     };
+    };
+	xhttp.open("GET", "https://intense-beach-78744.herokuapp.com/?city=" + townName, true);
+	xhttp.send();	
+
+};
+
+//this
+//.onchange
+//.value
+//.length
+//JSON.parse
+//responseText
