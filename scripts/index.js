@@ -10,26 +10,30 @@ var weather_state_name = document.querySelector("#weather_state_name");
 var wind_speed = document.querySelector("#wind_speed");
 
 var shortWeather = weather.consolidated_weather[0];
+var breadcrumpCountry =  document.querySelector("#breadcrump-country");
+var breadcrumpRegion =  document.querySelector("#breadcrump-region");
+
 
 var weatherIconsPlaceholders = document.querySelectorAll("img")
 
 var select = document.querySelector("#city");
 select.onchange = function(){
 	var townName = select.value;
-	
-
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       	var response = JSON.parse(this.responseText);
 
-        humidity.innerText = response.current.humidity
-        the_temp.innerText = response.current.temp_c
-        weather_state_name.innerText = response.current.condition.text
-        wind_speed.innerText = response.current.wind_kph
+        humidity.innerText = response.current.humidity;
+        the_temp.innerText = response.current.temp_c;
+        weather_state_name.innerText = response.current.condition.text;
+        wind_speed.innerText = response.current.wind_kph;
+
+        breadcrumpCountry.innerText = response.location.country;
+        breadcrumpRegion.innerText = response.location.region;
 
         cityName.innerText = response.location.name;
-        time.innerText = response.location.localtime;
+        time.innerText = response.location.localtime.split(" ").pop();
         weatherIconsPlaceholders.forEach(function(img){
         	img.setAttribute("src", "http:" + response.current.condition.icon)}
         	);
